@@ -1,0 +1,51 @@
+name: Add team to new repo
+
+on:
+  repository_dispatch:
+    types: [new_repo]
+
+jobs:
+  add-team:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get payload
+        id: get-payload
+        run: echo "::set-output name=payload::${{ github.event.client_payload }}"
+
+      - name: Add team to repo
+        if: ${{ steps.get-payload.outputs.payload.repo != '' }}
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'Add team to repo'
+          title: 'Add team to repo'
+          branch: 'main'
+          base: 'main'
+          path: '.github/workflows'
+          branch-suffix: ''
+          delete-branch: true
+          body: |
+            The following team has been added to the repository:
+            - Team: New team
+              Permissions: pull
+          edit-mode: 'append'
+          draft: false
+          path: '.github/workflows/workflow1.yml'
+          maintainer-can-modify: true
+          author: 'GitHub Actions'
+          labels: ''
+          assignees: ''
+          reviewers: ''
+          team-reviewers: ''
+          milestone: ''
+          projects: ''
+          dismiss-stale-reviews: false
+          require-up-to-date-checks: false
+          enforce-admins: false
+          signoff: false
+          reviewers-self-assign: false
+          team-reviewers-self-assign: false
+          assignees-self-assign: false
+          added-teams: 'New team'
+          permission: 'pull'
+          repository: ${{ github.event.client_payload.repo }}
