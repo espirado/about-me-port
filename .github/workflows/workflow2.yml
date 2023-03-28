@@ -30,7 +30,7 @@ jobs:
               Permissions: pull
           edit-mode: 'append'
           draft: false
-          path: '.github/workflows/workflow1.yml'
+          path: '.github/workflows/blank.yml'
           maintainer-can-modify: true
           author: 'GitHub Actions'
           labels: ''
