@@ -1,0 +1,17 @@
+name: Dispatch new repo event
+
+on:
+  organization:
+    types: [created, deleted, renamed, transferred]
+
+jobs:
+  dispatch-event:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch event
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          event-type: new_repo
+          client-payload: '{"action": "${{ github.event.action }}", "repo": "${{ github.event.repo.name }}"}'
